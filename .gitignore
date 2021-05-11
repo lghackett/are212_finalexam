@@ -1,0 +1,9 @@
+*checkpoint.ipynb
+.DS_Store
+*.pyc
+*.aux
+*.log
+*.out
+*.gz
+*latexmk
+*.fls
