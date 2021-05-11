@@ -628,7 +628,7 @@ GMM test is more flexible than the Breusch-Pagan test, which assumes
 normality of the errors and, in this formulation, that any
 heterskedasticity is linear in \(x\).
 
-I explore this in the notebook BP_GMM, where I compare the $J$ statistics for a data process where $X$ is endogeneous versus an exogeneous $X$, and find that the distributions are similar, but that the endogeneous distribution seems to be shifted slightly to the right, which would lead to more rejections of the null hypothesis. 
+I explore this in the notebook BPGMM, where I compare the $J$ statistics for a data process where $X$ is endogeneous versus an exogeneous $X$, and find that the distributions are similar, but that the endogeneous distribution seems to be shifted slightly to the right, which would lead to more rejections of the null hypothesis. 
 
     \question Suppose that in fact that \(x\) is distributed uniformly
 over the interval \([0,2\pi]\), and \(E(u^2|x) = \sigma^2(x) = \sigma^2 + \sin(x)\), thus violating (a.ii). What can you say about the performance of the Breusch-Pagan test in this circumstance? Can you modify your GMM test to provide a superior
@@ -667,21 +667,26 @@ for \(f(x)\) non-constant.
 In a similar vein to the previous proposal, if we suspect that
 \(\mathbb{E}(u^2|x) = f(x)\), we may want to approximate this non-linear
 relationship with basis functions. For example, on the interval
-\([0, 2\pi]\), the function \(\sigma^2\sin(x)\) may be reasonably
+\([0, 2\pi]\), the function \(\sigma^2 + \sin(x)\) may be reasonably
 approximated by a cubic basis function. Therefore we could modify the
 Breusch-Pagan test to be:
 \begin{align*}\hat{u}^2 = c + d_1x + d_2x^2 + d_3x^3 + e\end{align*}
 with the joint hypothesis
 \begin{align*}H_0: \begin{bmatrix} d_1 \\ d_2 \\ d_3 \end{bmatrix} = \begin{bmatrix} 0 \\ 0\\ 0 \end{bmatrix}\end{align*}
+
+I explore this method in the notebook BP\textunderscore basis\textunderscore approx.ipynb, where I set up this form of disturbances, and estimate a basis function on the $\hat{u}^2$. As you can see in the notebook, using a simple polynomial basis function to the fourth power approximates $f(X)$ fairly well.
+
     \question Show that you can use your ideas about estimating \(f(x)\)
 to construct a more efficient estimator of \(\beta\) if \(f(x)\) isn't
 constant. Relate your estimator to the optimal generalized least squares
 (GLS) estimator.
 
-\textbf{Answer} Using the estimated basis function from the previous part, we can use $\hat{f}(x)$ to estimate GLS, which will yield
+\textbf{Answer} Using the estimated basis function from the previous part, we can use $\hat{f}(x)$ to estimate $\hat{\Sigma} = \hat{f}(X)$, an $N\times N$ diagonal matrix. Then we can implement optimal GLS, which will yield
 \begin{align*}
-b_{GLS} = (X'\hat{f}(X)^{-1}X)^{-1}X'\hat{f}(X)^{-1}y
+b_{GLS} = (X'\hat{\Sigma}^{-1}X)^{-1}X'\hat{\Sigma}^{-1}y
 \end{align*}
+
+In the presence of heteroskedasticity, OLS is no longer BLUE, so this GLS estimate will be more efficient. 
 
 
 \end{questions}
@@ -709,7 +714,7 @@ officer; and \(S\) the event that the civilian is shot by the officer.
 We can then express Fry's finding regarding shootings as not being able
 to reject either
 \begin{equation}
-Pr(S\textbar D = 1, R) = Pr(S | D = 1)
+Pr(S | D = 1, R) = Pr(S | D = 1)
 \end{equation}
 or
 \begin{equation}
@@ -736,7 +741,7 @@ officers) then racial profiling may be negatively correlated with the
 probability of being shot by an officer. i.e., racial profiling is
 clearly positively correlated with \(P(D | R = black)\) and negatively
 correlated with \(S\). This omitted variable therefore would bias the
-estimate of the marginal effect of \(R\) on \(S\) downwards downwards,
+estimate of the marginal effect of \(R\) on \(S\) downwards,
 which would throw doubt on our ability to estimate (1).
 
 A related but distinct source of endogeneity is officer bias given that
@@ -747,7 +752,7 @@ they are more dangerous than other ethnic groups, then this bias could
 be correlated with an increased propensity to exaggerate the variables
 \(V\) experienced by the officer during the interaction, as well as an
 increased propensity to use deadly force given a perceived level of
-\(V\). This source of endogeneity decreases our confidencein being able
+\(V\). This source of endogeneity decreases our confidence in being able
 to test (2), because \(V\) is reported by the officer, so it may not be
 accurate and may be correlated with their propensity to use force.
 
@@ -760,8 +765,8 @@ In particular, what does one need to assume about \(Pr(D = 1|R,U)\)?
 \((R, S, U, D, V)\). The omitted variable of racial profiling described
 above is what causes the relationship between race and factors previous
 to the encounter or directly the probability of being stopped marked by
-(1). The omitted variable of bias that ocurs during the encounter is
-marked by the path from R to V, marked with (2). All of these signalled
+\textcircled{1}. The omitted variable of bias that ocurs during the encounter is
+marked by the path from R to V, marked with \textcircled{2}. All of these signalled
 arrows must ``not exist'' (i.e., there is no relationship between race
 and getting stopped or the officer's perception of the danger level of
 the encounter) in order for equations (1) and (2) to be interpreted as
@@ -775,7 +780,7 @@ Note that equation (1) above attempts to do inference on
 \begin{align*}Pr(S|D=1,R,U) = \frac{Pr(S\cap D = 1|R, U)}{P(D=1|R, U)}
 \end{align*}
 
-but \(P(D=1|R, U)\) is not observable just from police incidence
+\(P(D=1|R, U)\) is not observable just from police incidence
 reports. Therefore, we need the condition
 \(Pr(D = 1|R,U) = Pr(D = 1 | U)\) (the probability of being stopped is
 independent of race) so that prejudice does not confound estimation by
@@ -818,7 +823,7 @@ proposes that \(P(D = 1 | R) > P(D = 1)\), whereas Fry's model requires
 \(P(D = 1 | R)= P(D = 1)\) for his identification strategy. Therefore,
 testing these models against eachother only requires evidence of
 \(P(D=1)\) vs.~\(P(D=1|R)\). For example, Horrace and Rohlin (2016)
-exploit the relative darkness of nightand hence deteriorated ability of
+exploit the relative darkness of night (which deteriorates the ability of
 police officers to identify the race of someone they may stop) to
 measure racial profiling, and find that the ``odds of a black driver
 being stopped (relative to nonblack drivers) increase 15\% in daylight
@@ -916,9 +921,9 @@ V_{gmm} = (Z'X)^{-1}\Omega (X'Z)^{-1} = (Z'X)^{-1}Z'ee'Z(X'Z)^{-1} = V_{IV}
 
 \question For the estimator described in (2), suppose that $W$ is diagonal, with diagonal elements proportional to $(1,1/2,1/4,\ldots,2^{1-l})$. Under what conditions is the estimator $b_W$ the optimally weighted estimator? Can you think of a practical example where the optimal weighting matrix might have this structure?
 
-\textbf{Answer} $b_W$ is the optimally weighted estimator if $b_W$ is proportional to $(Z'Z)^{-1}$. If this is the case, then this essentially states that the $l$ instruments have no covariance between themselves, and the variance of each instrument is half of the one preceding it. 
+\textbf{Answer} $b_W$ is the optimally weighted estimator if $W$ is proportional to $(Z'ee'Z)^{-1} = (ZZ'e^2)^{-1}$. 
 
-As a practical example, this could be the case if the $Z_l$ are independent measurements of a variable $X$, each with different units of measurement that result in different variances. FIXME
+A practical example where the optimal weighting matrix might have this structure is in the case of serial correlation, parameterized by $\rho$. Suppose that our instruments represent treatment status in time since an event $E$ (think of an event study). If the treatment/event causes the treated to diverge from the untreated over time, then the variance will grow over time, causing the diagonals of $Z'Ze^2$ to grow larger. Subsequently, the diagonals of $(ZZ'e^2)^{-1}$ will decrease by a factor of $\rho$ in each period. 
 
 
 \end{questions}
