@@ -628,7 +628,7 @@ GMM test is more flexible than the Breusch-Pagan test, which assumes
 normality of the errors and, in this formulation, that any
 heterskedasticity is linear in \(x\).
 
-I explore this in the notebook BPGMM, where I compare the $J$ statistics for a data process where $X$ is endogeneous versus an exogeneous $X$, and find that the distributions are similar, but that the endogeneous distribution seems to be shifted slightly to the right, which would lead to more rejections of the null hypothesis. 
+I explore this in the notebook \href{https://github.com/lghackett/are212_finalexam/blob/master/BP_GMM.ipynb}{BPGMM}, where I compare the $J$ statistics for a data process where $X$ is endogeneous versus an exogeneous $X$, and find that the distributions are similar, but that the endogeneous distribution seems to be shifted slightly to the right, which would lead to more rejections of the null hypothesis. 
 
     \question Suppose that in fact that \(x\) is distributed uniformly
 over the interval \([0,2\pi]\), and \(E(u^2|x) = \sigma^2(x) = \sigma^2 + \sin(x)\), thus violating (a.ii). What can you say about the performance of the Breusch-Pagan test in this circumstance? Can you modify your GMM test to provide a superior
@@ -674,7 +674,7 @@ Breusch-Pagan test to be:
 with the joint hypothesis
 \begin{align*}H_0: \begin{bmatrix} d_1 \\ d_2 \\ d_3 \end{bmatrix} = \begin{bmatrix} 0 \\ 0\\ 0 \end{bmatrix}\end{align*}
 
-I explore this method in the notebook BP\textunderscore basis\textunderscore approx.ipynb, where I set up this form of disturbances, and estimate a basis function on the $\hat{u}^2$. As you can see in the notebook, using a simple polynomial basis function to the fourth power approximates $f(X)$ fairly well.
+I explore this method in the notebook \href{https://github.com/lghackett/are212_finalexam/blob/master/BP_basis_approx.ipynb}{BP\textunderscore basis\textunderscore approx.ipynb}, where I set up this form of disturbances, and estimate a basis function on the $\hat{u}^2$. As you can see in the notebook, using a simple polynomial basis function to the fourth power approximates $f(X)$ fairly well.
 
     \question Show that you can use your ideas about estimating \(f(x)\)
 to construct a more efficient estimator of \(\beta\) if \(f(x)\) isn't
@@ -842,7 +842,6 @@ Big City, Racial Profiling. The Review of Economics and Statistics 2016;
 Estimators}\label{weighting-of-linear-iv-estimators}}
 
 Consider the Linear IV model
-
 \begin{align*}
 y = X\beta + u \qquad\mathbb{E}(Z'u) = 0
 \end{align*}
@@ -885,11 +884,9 @@ rank, plus the regularity conditions about the data being iid and
 g_N(\beta) = \sum_{i=1}^N W_iZ_i'y - W_iZ_i'X_i\beta = WZ'y - WZ'X\beta
 \end{align*}
 then the GMM criterian function is:
-
 \begin{align*}
 J(\beta) &= N(WZ'y - WZ'X\beta)'(WZ'y - WZ'X\beta)
 \end{align*}
-
 \question Consider Hansen’s description of the two-stage least squares estimator (Section 12.12). What is $W$ for this estimator? Under what conditions is this the optimally weighted GMM estimator?
 
 \textbf{Answer} Minimizing the above, we can see that:
